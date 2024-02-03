@@ -1,14 +1,18 @@
 import { useState } from "react";
 
-function ListGroup() {
-  let arr: any[] = [21, 34, 51, 53, "sdas"];
-     let [selectedIndex, setSelectedIndex] = useState(-1);
+interface listInfo{
+  arr: any[],
+  heading: string,
+  onSelect: (item: string)=>void
+}
 
+function ListGroup(props: listInfo) {
+  let [selectedIndex, setSelectedIndex] = useState(-1);
 
   // console.log(arr);
 
   let check = () => {
-    return arr.length === 0 && <p>No item found</p>;
+    return props.arr.length === 0 && <p>No item found</p>;
   };
 
   function display(a: any) {
@@ -17,14 +21,18 @@ function ListGroup() {
 
   return (
     <>
-      <h1>List</h1>
+      <h1>{props.heading}</h1>
       {check()}
       <ul className="list-group">
-        {arr.map((items, index) => (
+        {props.arr.map((items, index) => (
           <li
             key={items}
-            className= {selectedIndex === index? "list-group-item active": "list-group-item"}
-            onClick={(event) => setSelectedIndex(index)}
+            className={
+              selectedIndex === index
+                ? "list-group-item active"
+                : "list-group-item"
+            }
+            onClick={(event) => {setSelectedIndex(index); props.onSelect(items);}}
           >
             {items}
           </li>
